@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>hs-like client</title></head>
+<body>
+<h3>Simple WS client</h3>
+<label>Room: <input id="room" value="room1"></label>
+<label>Name: <input id="name" value="alice"></label>
+<button id="connect">Connect</button>
+<pre id="log"></pre>
+<script>
+let ws;
+document.getElementById("connect").onclick = () => {
+  const room = document.getElementById("room").value;
+  const name = document.getElementById("name").value;
+  ws = new WebSocket(`ws://localhost:8000/ws/${room}/${name}`);
+  ws.onopen = () => log("connected");
+  ws.onmessage = (e) => log("recv: " + e.data);
+  ws.onclose = () => log("closed");
+};
+function log(s){ document.getElementById("log").textContent += s + "\n"; }
+</script>
+</body>
+</html>
